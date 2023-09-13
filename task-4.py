@@ -1,36 +1,47 @@
-# Sample movie data (Movie, Genre)
+# Sample movie dataset with characteristics (same as previous example)
 movies = [
-    ("Movie A", ["Action", "Adventure"]),
-    ("Movie B", ["Comedy", "Romance"]),
-    ("Movie C", ["Action", "Comedy"]),
-    ("Movie D", ["Drama"]),
-    ("Movie E", ["Adventure", "Family"]),
+    {
+        'title': 'Movie A',
+        'genre': ['Action', 'Adventure'],
+        'director': 'Director1',
+        'plot': 'Plot of Movie A'
+    },
+    {
+        'title': 'Movie B',
+        'genre': ['Drama', 'Romance'],
+        'director': 'Director2',
+        'plot': 'Plot of Movie B'
+    },
+    {
+        'title': 'Movie C',
+        'genre': ['Action', 'Sci-Fi'],
+        'director': 'Director1',
+        'plot': 'Plot of Movie C'
+    },
+    {
+        'title': 'Movie D',
+        'genre': ['Comedy'],
+        'director': 'Director3',
+        'plot': 'Plot of Movie D'
+    }
 ]
 
-# User preferences (Genre preferences)
-user_preferences = ["Action", "Adventure"]
-
-# Function to recommend movies based on user preferences
-def recommend_movies(user_preferences, movies):
+# Function to get movie recommendations based on user's preferred genre
+def get_recommendations(preferred_genre):
+    preferred_genre = preferred_genre.lower().strip()
     recommended_movies = []
-    for movie, genres in movies:
-        # Calculate the Jaccard similarity between user preferences and movie genres
-        intersection = set(user_preferences) & set(genres)
-        union = set(user_preferences) | set(genres)
-        similarity = len(intersection) / len(union)
-
-        # Consider movies with a similarity score above a threshold (e.g., 0.5)
-        if similarity > 0.5:
-            recommended_movies.append(movie)
+    for movie in movies:
+        if preferred_genre in [genre.lower() for genre in movie['genre']]:
+            recommended_movies.append(movie['title'])
     
     return recommended_movies
 
-# Get movie recommendations for the user
-recommendations = recommend_movies(user_preferences, movies)
+# Get user input for preferred genre
+preferred_genre = input('Enter your preferred movie genre: ')
 
-if recommendations:
-    print("Recommended Movies:")
-    for movie in recommendations:
-        print(movie)
+# Get movie recommendations based on user's preferred genre
+recommended_movies = get_recommendations(preferred_genre)
+if recommended_movies:
+    print(f'Recommended Movies in the {preferred_genre} genre: {recommended_movies}')
 else:
-    print("No recommendations found.")
+    print(f'No movies found in the {preferred_genre} genre.')
